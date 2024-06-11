@@ -1,10 +1,49 @@
 ﻿@page
+@using Microsoft.Data.Sqlite
 @model IndexModel
+
 @{
     ViewData["Title"] = "Home page";
-}
+    // Establish your SQL Server connection (replace with your connection string)
+    string connectionString = "DataSource=FeedingSchedules.db";
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    using (SqliteConnection connection = new SqliteConnection(connectionString))
+    {
+        connection.Open();
+
+        string sqlQuery = "SELECT E.first_name AS ZooKeeperName, A.name AS AnimalName, A.species AS AnimalSpecies, FT.feeding_time AS FeedingTime FROM Animals AS A JOIN Employees AS E ON A.employee_id = E.employee_id JOIN FeedingTimes AS FT ON A.feeding_time = FT.feeding_time";
+
+        using (SqliteCommand command = new SqliteCommand(sqlQuery, connection))
+        {
+            using (SqliteDataReader reader = command.ExecuteReader())
+            {
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ZooKeeper</th>
+                            <th>Animal</th>
+                            <th>Species</th>
+                            <th>Feeding Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @while (reader.Read())
+                        {
+                            string zooKeeperName = reader["ZooKeeperName"].ToString();
+                            string animalName = reader["AnimalName"].ToString();
+                            string animalSpecies = reader["AnimalSpecies"].ToString();
+                            string feedingTime = reader["FeedingTime"].ToString();
+
+                            <tr>
+                                <td>@zooKeeperName</td>
+                                <td>@animalName</td>
+                                <td>@animalSpecies</td>
+                                <td>@feedingTime</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        }
+    }
+}
