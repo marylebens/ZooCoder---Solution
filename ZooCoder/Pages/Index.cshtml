@@ -2,8 +2,31 @@
 @using Microsoft.Data.Sqlite
 @model IndexModel
 
+<h1>Feeding Schedule for Como Zoo</h1>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #5f5a5a;
+        }
+        h1 {
+            color: #5f5a5a;
+            text-align: center;
+        }
+        form, table {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        /* Apply padding to all table cells */
+        th, td {
+            padding: 5px;
+        }
+</style>
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Feeding Schedule for Como Zoo";
     // Establish your SQL Server connection (replace with your connection string)
     string connectionString = "DataSource=FeedingSchedules.db";
 
@@ -11,7 +34,7 @@
     {
         connection.Open();
 
-        string sqlQuery = "SELECT E.first_name AS ZooKeeperName, A.name AS AnimalName, A.species AS AnimalSpecies, FT.feeding_time AS FeedingTime FROM Animals AS A JOIN Employees AS E ON A.employee_id = E.employee_id JOIN FeedingTimes AS FT ON A.feeding_time = FT.feeding_time";
+        string sqlQuery = "SELECT E.first_name AS ZooKeeperName, A.name AS AnimalName, A.species AS AnimalSpecies, FT.feeding_time AS FeedingTime FROM Animals AS A JOIN Employees AS E ON A.employee_id = E.employee_id JOIN FeedingTimes AS FT ON A.feeding_time = FT.feeding_time ORDER BY ZooKeeperName, FeedingTime";
 
         using (SqliteCommand command = new SqliteCommand(sqlQuery, connection))
         {
@@ -47,3 +70,4 @@
         }
     }
 }
+

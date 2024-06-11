@@ -3,57 +3,25 @@
 
 @model PrivacyModel
 @{
-    ViewData["Title"] = "Animal Names";
+    ViewData["Title"] = "Privacy";
 }
 <h1>@ViewData["Title"]</h1>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy</title>
+</head>
+<body>
+    <h2>Introduction</h2>
+    <p>Welcome to our web application! This privacy policy outlines how we collect, use, share, and protect your personal information. </p>
 
-@{
 
-//Connect to database and set names from animals table
-//Create a new connection to the SQLite Database
-var connectionString = "Data Source=FeedingSchedules.db;";
-var connection = new SqliteConnection(connectionString);
+    <h2>Data Sharing</h2>
+    <p>We do not sell or share your personal information with third parties. </p>
 
-    //Create a list to hold the animal names
-    var animalNames = new List<string>();
-
-    //Open a new connection to the database
-    using (connection)
-    {
-        connection.Open();
-        var sql = "SELECT Name FROM Animals"; // Your SQL query
-
-        //Execute the SQL command (the select statement to retrieve the data)
-        var command = new SqliteCommand(sql, connection);
-        using (command)
-        {
-            //Create a reader to read the database records
-            using (var reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    //Add each animal name to the list
-                    animalNames.Add(reader.GetString(0));
-                }
-            }
-        }
-    }
-}
-
-<table>
-    <thead>
-        <tr>
-            <th>Animal Name</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!--Loop through the list of animal names we retrieved from the database and add each name to the HTML table-->
-        @foreach (var name in animalNames)
-        {
-            <tr>
-                <td>@name</td>
-            </tr>
-        }
-    </tbody>
-</table>
+  
+</body>
+</html>
