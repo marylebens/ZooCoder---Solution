@@ -1,8 +1,59 @@
 ﻿@page
+@using Microsoft.Data.Sqlite
+
 @model PrivacyModel
 @{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Animal Names";
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+
+@{
+
+//Connect to database and set names from animals table
+//Create a new connection to the SQLite Database
+var connectionString = "Data Source=FeedingSchedules.db;";
+var connection = new SqliteConnection(connectionString);
+
+    //Create a list to hold the animal names
+    var animalNames = new List<string>();
+
+    //Open a new connection to the database
+    using (connection)
+    {
+        connection.Open();
+        var sql = "SELECT Name FROM Animals"; // Your SQL query
+
+        //Execute the SQL command (the select statement to retrieve the data)
+        var command = new SqliteCommand(sql, connection);
+        using (command)
+        {
+            //Create a reader to read the database records
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    //Add each animal name to the list
+                    animalNames.Add(reader.GetString(0));
+                }
+            }
+        }
+    }
+}
+
+<table>
+    <thead>
+        <tr>
+            <th>Animal Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--Loop through the list of animal names we retrieved from the database and add each name to the HTML table-->
+        @foreach (var name in animalNames)
+        {
+            <tr>
+                <td>@name</td>
+            </tr>
+        }
+    </tbody>
+</table>

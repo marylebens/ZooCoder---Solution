@@ -4,27 +4,27 @@ using System.Data;
 using Microsoft.Data.Sqlite;
 
 //Connect to database and set names from animals table
-        //var connectionString = "Data Source=FeedingSchedules.db;Version=3;";
-        var connectionString = "Data Source=FeedingSchedules.db;";
-        var connection = new SqliteConnection(connectionString);
-            using (connection)
-            {
-                connection.Open();
 
-                var sql = "SELECT Name FROM Animals";
-                var command = new SqliteCommand(sql, connection);
-                using (command)
-                {
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var animalName = reader.GetString(0);
-                            Console.WriteLine($"Animal Name: {animalName}");
-                        }
-                    }
-                }
+var connectionString = "Data Source=FeedingSchedules.db;";
+var connection = new SqliteConnection(connectionString);
+using (connection)
+{
+    connection.Open();
+
+    var sql = "SELECT Name FROM Animals";
+    var command = new SqliteCommand(sql, connection);
+    using (command)
+    {
+        using (var reader = command.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                var animalName = reader.GetString(0);
+                Console.WriteLine($"Animal Name: {animalName}");
             }
+        }
+    }
+}
 //----END DATABASE CODE--------
 //-----------------------------------------
 
